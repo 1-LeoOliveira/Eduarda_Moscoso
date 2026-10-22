@@ -1,0 +1,281 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 270 30% 99%;
+    --foreground: 265 20% 14%;
+    --card: 0 0% 100%;
+    --card-foreground: 265 20% 14%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 265 20% 14%;
+    --primary: 266 31% 50%;
+    --primary-foreground: 270 30% 99%;
+    --secondary: 212 58% 45%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 270 20% 96%;
+    --muted-foreground: 265 10% 45%;
+    --accent: 211 60% 94%;
+    --accent-foreground: 213 52% 30%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 60 9.1% 97.8%;
+    --border: 268 20% 91%;
+    --input: 268 20% 91%;
+    --ring: 266 31% 50%;
+    --radius: 0.5rem;
+    --chart-1: 266 31% 50%;
+    --chart-2: 212 58% 45%;
+    --chart-3: 266 30% 68%;
+    --chart-4: 210 50% 72%;
+    --chart-5: 266 35% 36%;
+  }
+
+  .dark {
+    --background: 265 25% 9%;
+    --foreground: 270 30% 98%;
+    --card: 265 24% 13%;
+    --card-foreground: 270 30% 98%;
+    --popover: 265 24% 13%;
+    --popover-foreground: 270 30% 98%;
+    --primary: 266 40% 62%;
+    --primary-foreground: 265 25% 9%;
+    --secondary: 211 60% 62%;
+    --secondary-foreground: 265 25% 9%;
+    --muted: 265 18% 18%;
+    --muted-foreground: 265 12% 65%;
+    --accent: 265 18% 18%;
+    --accent-foreground: 270 30% 98%;
+    --destructive: 0 72.2% 50.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 265 18% 18%;
+    --input: 265 18% 18%;
+    --ring: 266 40% 62%;
+    --chart-1: 266 40% 66%;
+    --chart-2: 211 58% 62%;
+    --chart-3: 266 32% 74%;
+    --chart-4: 210 48% 74%;
+    --chart-5: 266 42% 56%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: "Inter Variable", "Inter", system-ui, sans-serif;
+  }
+
+  button:not([disabled]),
+  [role="button"]:not([disabled]) {
+    cursor: pointer;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.gradient-hero {
+  background: linear-gradient(135deg, hsl(266, 31%, 50%) 0%, hsl(266, 35%, 34%) 50%, hsl(285, 30%, 28%) 100%);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, hsl(266, 31%, 50%), hsl(212, 58%, 45%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.card-shadow {
+  box-shadow: 0 4px 20px -2px rgba(122, 88, 168, 0.12), 0 2px 8px -2px rgba(0, 0, 0, 0.06);
+}
+
+.floating {
+  animation: floating 3s ease-in-out infinite;
+}
+
+@keyframes floating {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Revelação no scroll. Usa animação com a propriedade independente translate,
+   e não transition/transform: assim não sobrescreve os hover:-translate-y e os
+   transition-all que os cards já usam. */
+.reveal-ativo [data-revelar] {
+  opacity: 0;
+}
+
+.reveal-ativo [data-revelar].visivel {
+  animation: revelar 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes revelar {
+  from { opacity: 0; translate: 0 24px; }
+  to { opacity: 1; translate: none; }
+}
+
+/* Entrada do retrato do hero, uma única vez no carregamento: o disco abre e
+   ela sobe de dentro dele. O translateX(-50%) precisa estar nos keyframes
+   porque o disco é centrado por transform — sem isso ele salta para o lado
+   enquanto anima. */
+.entrada-disco {
+  animation: entrada-disco 1000ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes entrada-disco {
+  from { opacity: 0; transform: translateX(-50%) scale(0.8); }
+  to { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+
+.entrada-retrato {
+  animation: entrada-retrato 1100ms cubic-bezier(0.16, 1, 0.3, 1) 160ms both;
+}
+
+@keyframes entrada-retrato {
+  from { opacity: 0; transform: translateY(32px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .entrada-disco,
+  .entrada-retrato {
+    animation: none;
+  }
+}
+
+/* Aura branca do retrato do hero. Segue o alfa do recorte, e o raio cresce
+   junto com a coluna para não pesar no mobile. */
+.aura-retrato {
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.9))
+          drop-shadow(0 0 22px rgba(255, 255, 255, 0.6));
+}
+
+@media (min-width: 1024px) {
+  .aura-retrato {
+    filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.9))
+            drop-shadow(0 0 34px rgba(255, 255, 255, 0.6));
+  }
+}
+
+/* Button Animations */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.btn-primary:hover::before {
+  left: 100%;
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px -5px rgba(122, 88, 168, 0.45);
+}
+
+.btn-primary:active {
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  box-shadow: inset 0 0 0 2px hsl(266, 31%, 50%);
+}
+
+.btn-secondary:hover::after {
+  opacity: 1;
+}
+
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  background-color: hsl(266, 45%, 97%);
+}
+
+.btn-whatsapp {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btn-whatsapp::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+}
+
+.btn-whatsapp:hover::before {
+  width: 200%;
+  height: 200%;
+}
+
+.btn-whatsapp:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 10px 30px -5px rgba(34, 197, 94, 0.5);
+}
+
+.btn-float {
+  animation: float-bounce 2s ease-in-out infinite;
+}
+
+@keyframes float-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.btn-float:hover {
+  animation: none;
+  transform: scale(1.15);
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 0.5; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+.pulse-ring::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  border: 2px solid currentColor;
+  animation: pulse-ring 1.5s ease-out infinite;
+}
