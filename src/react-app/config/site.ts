@@ -1,6 +1,5 @@
 /**
  * Dados do site em um único lugar.
- * Os valores marcados com TODO precisam ser preenchidos antes de publicar.
  */
 
 export const site = {
@@ -9,11 +8,10 @@ export const site = {
   crp: "CRP 10/11273",
   approach: "Psicanálise",
 
-  // TODO: trocar pelo WhatsApp real (formato internacional, só dígitos)
-  whatsapp: "5500000000000",
-  // TODO: trocar pelo telefone real, exibido no footer
-  phone: "(00) 0 0000-0000",
-  phoneHref: "tel:+5500000000000",
+  /** Formato internacional, só dígitos: 55 (Brasil) + 91 (DDD) + número. */
+  whatsapp: "5591983297125",
+  phone: "(91) 98329-7125",
+  phoneHref: "tel:+5591983297125",
 
   instagram: "psi.eduardamoscoso",
 
